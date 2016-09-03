@@ -3,7 +3,6 @@ from conans.tools import download, unzip
 import os
 import shutil
 import textwrap
-import psutil
 
 class NodeConan( ConanFile ):
   name = 'node'
@@ -31,7 +30,7 @@ class NodeConan( ConanFile ):
     configure_command = 'cd %s && %s ./configure %s' % ( self.source_dir, env.command_line, flags )
     self.output.info( 'Configure with: %s' % configure_command )
     self.run( configure_command )
-    self.run( 'cd %s && %s make -j%s' % ( self.source_dir, env.command_line, psutil.cpu_count()) )
+    self.run( 'cd %s && %s make -j2' % ( self.source_dir, env.command_line) )
 
   def package( self ):
     self.copy( '*.h', dst='include', src='%s/src' % self.source_dir )
