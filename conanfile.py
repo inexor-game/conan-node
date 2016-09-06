@@ -34,11 +34,13 @@ class NodeConan( ConanFile ):
 
   def package( self ):
     self.copy( '*.h', dst='include', src='%s/src' % self.source_dir )
-    self.copy( '*.h', dst='include', src='%s/deps/v8' % self.source_dir )
-    self.copy( '*.h', dst='include', src='%s/deps/v8/include' % self.source_dir )
-    self.copy( '*.h', dst='include', src='%s/deps/uv/include' % self.source_dir )
-    self.copy( '*.h', dst='include', src='%s/deps/cares/include' % self.source_dir )
-    self.copy( '*.h', dst='include', src='%s/deps/openssl/openssl/include' % self.source_dir )
+    self.copy( '*.h', dst='deps/v8', src='%s/deps/v8' % self.source_dir )
+    self.copy( '*.h', dst='deps/v8/include', src='%s/deps/v8/include' % self.source_dir )
+    self.copy( '*.h', dst='deps/uv/include', src='%s/deps/uv/include' % self.source_dir )
+    self.copy( '*.h', dst='deps/cares/include', src='%s/deps/cares/include' % self.source_dir )
+    self.copy( '*.h', dst='deps/openssl/openssl/include', src='%s/deps/openssl/openssl/include' % self.source_dir )
+    self.copy( '*.h', dst='deps/openssl/openssl/crypto', src='%s/deps/openssl/openssl/crypto' % self.source_dir )
+    self.copy( '*.h', dst='deps/openssl/config', src='%s/deps/openssl/config' % self.source_dir )
     self.copy( '*node*.lib', dst='lib', keep_path=False )
     self.copy( '*node*.dll', dst='bin', keep_path=False )
     self.copy( '*node*.so', dst='lib', keep_path=False )
@@ -51,6 +53,8 @@ class NodeConan( ConanFile ):
       self.copy( '*node*.dylib', dst='lib', keep_path=False, src='%s/out/Debug' % self.source_dir )
 
   def package_info( self ):
+    self.cpp_info.includedirs = ['include', 'deps/v8', 'deps/v8/include', 'deps/uv/include', 'deps/cares/include', 'deps/openssl/openssl/include']
+
     if self.settings.os == 'Windows':
       if self.settings.build_type == 'Debug':
         self.cpp_info.libs = [ 'libnodemdd' ]
